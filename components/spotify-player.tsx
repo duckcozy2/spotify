@@ -35,6 +35,7 @@ export default function SpotifyPlayer() {
   const controller = useRef<Controller | null>(null)
   const current = useRef(0)
   const hasPlayed = useRef(false)
+  const pendingPlay = useRef(true)
   const [index, setIndex] = useState(0)
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -43,6 +44,7 @@ export default function SpotifyPlayer() {
   const randomTrack = useCallback(() => {
     const next = (current.current + 1 + Math.floor(Math.random() * (charts.tracks.length - 1))) % charts.tracks.length
     hasPlayed.current = false
+    pendingPlay.current = true
     current.current = next
     setIndex(next)
     controller.current?.loadUri(charts.tracks[next].uri)
@@ -52,9 +54,19 @@ export default function SpotifyPlayer() {
   useEffect(() => {
     let disposed = false
     let instance: Controller | null = null
+    let playbackStarted = false
+    let previousPosition = 0
+    let previousDuration = 0
+    const resumeAutoplay = (event: Event) => {
+      if (event.isTrusted && !playbackStarted) instance?.play()
+    }
+    document.addEventListener('click', resumeAutoplay)
+    document.addEventListener('keydown', resumeAutoplay)
     const timeout = window.setTimeout(() => { if (!disposed) setFailed(true) }, 15000)
     const initial = Math.floor(Math.random() * charts.tracks.length)
     current.current = initial
+    hasPlayed.current = false
+    pendingPlay.current = true
     setIndex(initial)
     const element = document.createElement('div')
     host.current?.appendChild(element)
@@ -66,13 +78,29 @@ export default function SpotifyPlayer() {
         controller.current = embed
         embed.addListener('playback_update', ({data}) => {
           if (disposed || data.playingURI !== charts.tracks[current.current].uri) return
-          if (!data.isPaused && !data.isBuffering) hasPlayed.current = true
+          if (!data.isPaused && !data.isBuffering) {
+            hasPlayed.current = true
+            pendingPlay.current = false
+            playbackStarted = true
+          }
+          // A newly loaded track may not accept play() until its first update.
+          if (pendingPlay.current && data.isPaused && !data.isBuffering) {
+            pendingPlay.current = false
+            embed.play()
+          }
+          const resetAtEnd = data.isPaused && data.position === 0 &&
+            previousDuration > 0 && previousPosition >= previousDuration - 1000
           // Ignore pauses, buffering, and stale updates from the previous track.
           if (hasPlayed.current && !data.isBuffering && data.duration > 0 &&
-              data.position >= data.duration - 100 &&
-              (data.isPaused || data.position >= data.duration)) {
+              ((data.position >= data.duration - 100 &&
+              (data.isPaused || data.position >= data.duration)) || resetAtEnd)) {
+            previousPosition = 0
+            previousDuration = 0
             randomTrack()
+            return
           }
+          previousPosition = data.position
+          previousDuration = data.duration
         })
         embed.addListener('ready', () => {
           if (disposed) return
@@ -86,6 +114,8 @@ export default function SpotifyPlayer() {
     return () => {
       disposed = true
       window.clearTimeout(timeout)
+      document.removeEventListener('click', resumeAutoplay)
+      document.removeEventListener('keydown', resumeAutoplay)
       instance?.destroy()
       element.remove()
       controller.current = null
@@ -102,7 +132,7 @@ export default function SpotifyPlayer() {
       <div className="mt-6" aria-live="polite"><p className="text-xs font-semibold tracking-wider text-accent">TOP 50 VIỆT NAM · CHỌN NGẪU NHIÊN</p><h3 className="mt-2 text-xl font-bold">{track.title}</h3><p className="mt-1 text-sm text-muted">{track.artist}</p></div>
       <button type="button" disabled={!ready} onClick={randomTrack} className="cta mt-6 w-full gap-2 disabled:cursor-wait disabled:opacity-50"><Shuffle size={18} aria-hidden="true"/>Đổi bài ngẫu nhiên</button>
       <a href={'https://open.spotify.com/track/'+track.uri.split(':')[2]} target="_blank" rel="noopener noreferrer" className="mt-4 flex items-center justify-center gap-2 text-sm text-accent">Mở trên Spotify<ArrowUpRight size={16} aria-hidden="true"/></a>
-      <p className="mt-4 text-center text-xs leading-5 text-muted">Nhạc tự phát khi trình duyệt cho phép. Nếu chưa nghe thấy, bấm Play. Spotify có thể phát bản nghe thử hoặc yêu cầu đăng nhập để nghe đầy đủ.</p>
+      <p className="mt-4 text-center text-xs leading-5 text-muted">Nhạc tự phát khi vào web và tự đổi bài khi phát hết. Nếu trình duyệt chặn tự phát, hãy nhấn vào trang hoặc bấm Play. Spotify có thể phát bản nghe thử hoặc yêu cầu đăng nhập để nghe đầy đủ.</p>
     </div>
   </div>
 }
