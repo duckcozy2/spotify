@@ -3,6 +3,7 @@ import type {Metadata} from 'next'
 import localFont from 'next/font/local'
 import {siteUrl} from '@/lib/seo'
 import {Header,Footer} from '@/components/site'
+import PurchaseNotices from '@/components/purchase-notices'
 const base=siteUrl
 const beVietnamPro=localFont({
   src:[
@@ -16,4 +17,4 @@ const beVietnamPro=localFont({
   fallback:['Arial','Helvetica','sans-serif'],
 })
 export const metadata:Metadata={metadataBase:new URL(base),title:{default:'SpotifyPremium.vn | Tìm hiểu & nâng cấp Spotify Premium',template:'%s | SpotifyPremium.vn'},description:'Khám phá quyền lợi Spotify Premium, tham khảo bảng giá, hướng dẫn đăng ký và giải đáp câu hỏi thường gặp.',robots:{index:true,follow:true},openGraph:{type:'website',locale:'vi_VN',siteName:'SpotifyPremium.vn'}}
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="vi" className={beVietnamPro.variable}><body><Header/><main>{children}</main><Footer/></body></html>}
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="vi" className={beVietnamPro.variable}><body><Header/><main>{children}</main><Footer/><PurchaseNotices/></body></html>}
