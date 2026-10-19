@@ -1,0 +1,11 @@
+import {writeFile} from 'node:fs/promises';
+const response = await fetch('https://open.spotify.com/embed/playlist/37i9dQZEVXbLdGSmz6xilI');
+if (!response.ok) throw new Error('Spotify chart request failed: ' + response.status);
+const html = await response.text();
+const match = html.match(/<script id="__NEXT_DATA__"[^>]*>(.*?)<\/script>/s);
+if (!match) throw new Error('Spotify chart data missing');
+const entity = JSON.parse(match[1]).props.pageProps.state.data.entity;
+const tracks = entity.trackList.filter(t => t.isPlayable && /^spotify:track:[a-zA-Z0-9]{22}$/.test(t.uri)).map(t => ({uri:t.uri,title:t.title,artist:t.subtitle}));
+if (!tracks.length) throw new Error('No playable chart tracks');
+await writeFile(new URL('../data/spotify-charts.json', import.meta.url), JSON.stringify({playlist:entity.uri,updatedAt:new Date().toISOString(),tracks},null,2)+'\n');
+console.log('Updated ' + tracks.length + ' chart tracks');

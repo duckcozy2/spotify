@@ -1,0 +1,2 @@
+import Link from 'next/link'
+export default function ArticleMenu(){return <nav aria-label="Chuyên mục bài viết" className="border-b border-white/10 bg-white/[0.035]"><div className="mx-auto flex max-w-6xl flex-wrap gap-x-6 gap-y-3 px-5 py-4 text-sm"><Link href="/bai-viet" className="font-bold text-accent">Tất cả bài viết</Link>{['Kiến thức','Hướng dẫn','Mẹo sử dụng','Tài khoản','Khắc phục lỗi','Tư vấn chọn gói'].map((name,i)=><Link key={name} href={'/bai-viet#chuyen-muc-'+i} className="text-muted hover:text-accent">{name}</Link>)}</div></nav>}
