@@ -1,0 +1,4 @@
+import type {Metadata} from 'next'
+import {PageHero,Prices,FAQs} from '@/components/site'
+export const metadata:Metadata={title:'Bảng giá Spotify Premium tham khảo',description:'Tham khảo các gói Spotify Premium theo thời hạn, quyền lợi và hướng dẫn lựa chọn gói phù hợp.'}
+export default function Page(){return <><PageHero eyebrow="BẢNG GIÁ" title="Chọn gói Premium phù hợp với bạn" description="Bảng giá dưới đây là dữ liệu mẫu dành cho bản demo giao diện, không phải giá bán chính thức."/><section className="section"><Prices/><p className="mt-8 text-center text-sm text-muted">Lưu ý: Giá và quyền lợi cần được xác minh trước khi công bố thương mại.</p></section><section className="section !pt-0"><h2 className="heading mb-10 text-center">Giải đáp trước khi đăng ký</h2><FAQs limit={3}/></section></>}

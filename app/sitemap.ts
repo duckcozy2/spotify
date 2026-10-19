@@ -1,0 +1,2 @@
+import type {MetadataRoute} from 'next'
+export default function sitemap():MetadataRoute.Sitemap{const base=process.env.NEXT_PUBLIC_SITE_URL||'https://example.com';return ['','/bang-gia','/huong-dan','/cau-hoi-thuong-gap','/spotify-premium-la-gi','/so-sanh-spotify-free-premium','/spotify-premium-sinh-vien'].map(path=>({url:base+path,lastModified:new Date(),changeFrequency:'monthly',priority:path?0.7:1}))}

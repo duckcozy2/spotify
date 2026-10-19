@@ -1,0 +1,5 @@
+import type {Metadata} from 'next'
+import Link from 'next/link'
+import {PageHero} from '@/components/site'
+export const metadata:Metadata={title:'Spotify Premium là gì? Quyền lợi và cách đăng ký',description:'Tìm hiểu Spotify Premium là gì, các lợi ích nổi bật và lưu ý trước khi đăng ký.'}
+export default function Page(){return <><PageHero eyebrow="KIẾN THỨC" title="Spotify Premium là gì?" description="Spotify Premium là dịch vụ thuê bao trả phí của Spotify, bổ sung nhiều tính năng nghe nhạc so với tài khoản miễn phí."/><article className="section max-w-4xl space-y-7 leading-8 text-white/80"><h2 className="text-2xl font-bold text-white">Những quyền lợi nổi bật</h2><p>Tùy gói và khu vực, Premium có thể bao gồm nghe nhạc không quảng cáo, tải nội dung để nghe ngoại tuyến, chọn bài hát và các tùy chọn âm thanh nâng cao.</p><h2 className="text-2xl font-bold text-white">Nên chọn gói nào?</h2><p>Hãy xem điều kiện sử dụng, số người tham gia, thời hạn và chính sách thanh toán trước khi lựa chọn. Thông tin cần đối chiếu với Spotify tại thời điểm đăng ký.</p><Link href="/bang-gia" className="cta">Xem bảng giá minh họa →</Link></article></>}
