@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://your-domain.com</loc>
+<lastmod>2026-10-19T11:48:37.456Z</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1</priority>
+</url>
+<url>
+<loc>https://your-domain.com/bang-gia</loc>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+</urlset>
