@@ -2,7 +2,7 @@
 
 import {useEffect,useState} from 'react'
 import Link from 'next/link'
-import {ArrowRight,Music2,X} from 'lucide-react'
+import {ArrowUpRight,Music2,Sparkles,X} from 'lucide-react'
 
 const buyers=['@minh***','@nam***','@trang***','@huy***','@linh***','@tuan***','@vy***','@duc***']
 const packages=['Premium 1 tháng','Premium 1 năm','Premium vĩnh viễn']
@@ -26,18 +26,22 @@ export default function PurchaseNotices(){
     return()=>clearTimeout(timer)
   },[dismissed])
   if(!notice)return null
-  return <aside key={notice.key} aria-label="Thông báo mua hàng" aria-live="polite" className="purchase-notice fixed bottom-4 left-4 z-40 w-[calc(100%-2rem)] max-w-[420px] overflow-hidden rounded-[24px] border border-white/15 bg-[#101a2b]/95 p-4 text-[#f6f7ff] shadow-[0_18px_55px_rgba(0,0,0,.45)] backdrop-blur-2xl sm:bottom-6 sm:left-6 sm:p-5">
-    <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent"/>
-    <button type="button" onClick={()=>{setNotice(null);setDismissed(true)}} className="absolute right-3 top-3 z-10 rounded-full border border-white/10 bg-white/5 p-2 text-white/60 hover:bg-white/10 hover:text-white" aria-label="Đóng thông báo"><X size={15}/></button>
-    <div className="flex items-start gap-3.5 sm:gap-4">
-      <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-accent/25 bg-gradient-to-br from-accent/20 to-[#263c60] text-accent shadow-[0_0_24px_rgba(81,243,187,.12)] sm:h-14 sm:w-14"><Music2 size={25} strokeWidth={1.8}/></span>
-      <div className="min-w-0 flex-1 pt-0.5">
-        <p className="pr-7 text-sm leading-5 sm:text-[15px]"><span className="font-bold">{notice.buyer}</span><span className="text-white/65"> vừa chọn gói</span></p>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <span className="rounded-full border border-white/10 bg-white/[.06] px-3 py-1 text-xs font-medium text-white/75">{notice.plan}</span>
-          <Link href="/bang-gia" className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3.5 py-2 text-xs font-bold text-[#07130f] shadow-[0_4px_16px_rgba(81,243,187,.2)] hover:brightness-110">Xem gói <ArrowRight size={14}/></Link>
+  return <aside key={notice.key} aria-label="Thông báo mua hàng" aria-live="polite" className="purchase-notice fixed bottom-4 left-4 z-40 w-[calc(100%-2rem)] max-w-[380px] overflow-hidden rounded-[22px] border border-white/[.12] bg-[#0e191c]/95 text-[#f6f7ff] shadow-[0_20px_60px_rgba(0,0,0,.5),inset_0_1px_0_rgba(255,255,255,.04)] backdrop-blur-2xl sm:bottom-6 sm:left-6">
+    <div aria-hidden="true" className="pointer-events-none absolute -left-12 -top-20 h-44 w-44 rounded-full bg-accent/10 blur-3xl"/>
+    <div className="relative p-4 sm:p-5">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-white/45"><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(81,243,187,.6)]"/>Lựa chọn Premium</p>
+        <button type="button" onClick={()=>{setNotice(null);setDismissed(true)}} className="-m-2 flex h-9 w-9 items-center justify-center rounded-full text-white/35 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent" aria-label="Đóng thông báo"><X size={16}/></button>
+      </div>
+      <div className="flex items-center gap-3.5">
+        <span aria-hidden="true" className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[18px] border border-accent/20 bg-gradient-to-br from-accent/20 to-accent/[.03] text-accent shadow-[inset_0_1px_0_rgba(255,255,255,.08)]"><Music2 size={25} strokeWidth={1.7}/><span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-[3px] border-[#0e191c] bg-accent text-[#0e191c]"><Sparkles size={10} strokeWidth={2.5}/></span></span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[15px] font-bold tracking-tight">{notice.buyer}</p>
+          <p className="mt-1 text-xs leading-5 text-white/45">Vừa chọn <span className="font-medium text-white/85">{notice.plan}</span></p>
         </div>
       </div>
+      <Link href="/bang-gia" className="group mt-5 flex items-center justify-between rounded-xl border border-accent/15 bg-accent/[.08] px-3.5 py-3 text-xs font-semibold text-accent transition-colors hover:border-accent/35 hover:bg-accent/[.15] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"><span>Khám phá gói Premium</span><ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"/></Link>
     </div>
+    <div aria-hidden="true" className="h-0.5 bg-white/5"><div className="purchase-notice-progress h-full origin-left bg-gradient-to-r from-accent/20 to-accent/70"/></div>
   </aside>
 }

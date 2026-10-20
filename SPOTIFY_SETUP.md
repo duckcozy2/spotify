@@ -1,5 +1,17 @@
 # Spotify profile lookup
 
+## Public metadata lookup (used by the plan form)
+
+`GET /api/spotify/lookup?input=UID` accepts a UID, user URI, or HTTPS profile link (`open.spotify.com` / `play.spotify.com`, including internationalized paths). `url` and `uid` query parameters are also accepted. No Spotify API credentials or customer sign-in are needed for this endpoint.
+
+The response contains `{success, uid, display_name, avatar, profile_url, lookup_status, source}`. `found` requires a non-generic name, an HTTPS Spotify CDN avatar, and matching canonical/OG profile identity. Missing data, upstream errors, redirects, and timeouts return `unavailable` with null name/avatar. Invalid input returns HTTP 400. The form uses this endpoint after a 700 ms delay and cancels stale requests.
+
+This is unofficial public metadata, not proof of account ownership. Spotify may block server fetches or omit metadata, so lookup is not guaranteed for every account. The form displays an error for unavailable metadata and does not treat the UID as a verified profile. Deploy with a Next.js server or Cloudflare OpenNext, not the old static `out/` directory.
+
+## Legacy Web API endpoint
+
+The `/api/spotify/profile` endpoint below is retained for compatibility. The plan form now uses `/api/spotify/lookup` instead.
+
 After selecting a plan, entering a UID automatically starts a lookup after 700 ms and displays the name, avatar, and profile link. Changing the input cancels the previous lookup. If Spotify has no display name, the UI explicitly shows the UID instead.
 
 API usage:
