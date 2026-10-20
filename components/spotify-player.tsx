@@ -1,7 +1,7 @@
 'use client'
 
 import {useCallback, useEffect, useRef, useState} from 'react'
-import {ArrowUpRight, Music2, Play, Shuffle} from 'lucide-react'
+import {ArrowUpRight, Music2, Shuffle} from 'lucide-react'
 import charts from '@/data/spotify-charts.json'
 
 type PlaybackEvent = {data: {playingURI: string; isPaused: boolean; isBuffering: boolean; duration: number; position: number}}
@@ -39,7 +39,6 @@ export default function SpotifyPlayer() {
   const [index, setIndex] = useState(0)
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
-  const [started, setStarted] = useState(false)
   const track = charts.tracks[index]
 
   const randomTrack = useCallback(() => {
@@ -83,7 +82,6 @@ export default function SpotifyPlayer() {
             hasPlayed.current = true
             pendingPlay.current = false
             playbackStarted = true
-            setStarted(true)
           }
           // A newly loaded track may not accept play() until its first update.
           if (pendingPlay.current && data.isPaused && !data.isBuffering) {
@@ -131,10 +129,6 @@ export default function SpotifyPlayer() {
       <div ref={host} className="min-h-[352px] overflow-hidden rounded-2xl" aria-label="Trình phát Spotify"/>
       {failed && <p role="status" className="mt-3 text-sm text-muted">Chưa tải được trình phát. Bạn có thể nghe trực tiếp trên Spotify bằng liên kết bên dưới.</p>}
       {!ready && !failed && <p role="status" className="mt-3 text-sm text-muted">Đang tải trình phát Spotify…</p>}
-      {ready && !failed && !started && <div className="mt-4">
-        <button type="button" onClick={() => controller.current?.play()} className="cta w-full gap-2"><Play size={18} aria-hidden="true"/>Phát nhạc</button>
-        <p role="status" className="mt-2 text-center text-xs text-muted">Nếu nhạc chưa chạy, nhấn Phát nhạc hoặc nút Play trong khung Spotify.</p>
-      </div>}
       <div className="mt-6" aria-live="polite"><p className="text-xs font-semibold tracking-wider text-accent">TOP 50 VIỆT NAM · CHỌN NGẪU NHIÊN</p><h3 className="mt-2 text-xl font-bold">{track.title}</h3><p className="mt-1 text-sm text-muted">{track.artist}</p></div>
       <button type="button" disabled={!ready} onClick={randomTrack} className="cta mt-6 w-full gap-2 disabled:cursor-wait disabled:opacity-50"><Shuffle size={18} aria-hidden="true"/>Đổi bài ngẫu nhiên</button>
       <a href={'https://open.spotify.com/track/'+track.uri.split(':')[2]} target="_blank" rel="noopener noreferrer" className="mt-4 flex items-center justify-center gap-2 text-sm text-accent">Mở trên Spotify<ArrowUpRight size={16} aria-hidden="true"/></a>
