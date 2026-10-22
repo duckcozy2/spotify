@@ -16,7 +16,7 @@
 			"binding": "DB",
 			"database_name": "spotify-db",
 			// Replace after: npx wrangler d1 create spotify-db
-			"database_id": "00000000-0000-0000-0000-000000000000",
+			"database_id": "9586b6f0-bd60-4766-8551-b3225f4d195e",
 			"migrations_dir": "migrations"
 		}
 	],
