@@ -36,4 +36,4 @@ The lookup uses client credentials and `GET /v1/users/{id}`. The Spotify app mus
 
 If your app does not have access, the supported alternative is a separate Spotify authorization flow using `/v1/me`; this requires the customer to sign in with Spotify and is not implemented here.
 
-The form accepts a Spotify user ID, profile URL, or `spotify:user:` URI. Display names and email addresses are not lookup keys. Only the ID is sent to the lookup endpoint; the phone number stays in browser component state. Confirmation prepares text for the customer to copy to a contact channel. It does not store an order, charge a payment, or send a message automatically.
+The form accepts a Spotify user ID, profile URL, or Spotify user URI. Display names and email addresses are not lookup keys. Confirmation now creates an order with the current server price and a bank-transfer QR. SePay verifies the transfer before a NoDNS grant can be sent. See PAYMENT_SETUP.md for grant/cancel endpoints, key configuration, admin controls and uncertain-result handling.

@@ -1,14 +1,21 @@
 import {salesArticles} from './sales-articles'
+import {seoArticles} from './seo-articles'
 export type Article = {
   slug: string
   title: string
   description: string
   category: string
+  keyword?: string
+  rootPath?: boolean
+  priority?: number
+  pricing?: boolean
   sections: {id: string; title: string; paragraphs: string[]; steps?: string[]}[]
   source: {title: string; url: string}
+  sources?: {title: string; url: string}[]
 }
 
 export const articles: Article[] = [
+  ...seoArticles,
   ...salesArticles,
   {
     slug: 'cach-tai-nhac-spotify-nghe-offline', category: 'Hướng dẫn',
@@ -77,4 +84,5 @@ export const existingArticles = [
   {href:'/so-sanh-spotify-free-premium', title:'So sánh Spotify Free và Premium', description:'Đối chiếu tính năng để chọn cách nghe phù hợp.', category:'Kiến thức'},
   {href:'/spotify-premium-sinh-vien', title:'Spotify Premium dành cho sinh viên', description:'Điều kiện xác minh và hướng dẫn đăng ký Student.', category:'Tài khoản'},
 ]
-export const articleLinks = [...existingArticles, ...articles.map(a=>({...a, href:'/bai-viet/'+a.slug}))]
+export const articlePath=(article:Article)=>(article.rootPath?'/':'/bai-viet/')+article.slug
+export const articleLinks = [...articles.map(a=>({...a, href:articlePath(a)})),...existingArticles]

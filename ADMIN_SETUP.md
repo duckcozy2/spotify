@@ -15,12 +15,12 @@ Production needs `ADMIN_PASSWORD` and a random `ADMIN_SESSION_SECRET` of at leas
 - Public contact link editing and a dismissible website announcement.
 - Revenue by day/month/all time using Vietnam time and the recorded payment timestamp; canceled orders are excluded.
 
-The sidebar follows the provided reference, excluding collaborators. SePay and NoDNS screens explicitly remain disconnected until their service credentials, endpoint documentation, and payment reconciliation requirements are supplied. No fabricated transactions or success states are displayed. Article editing is still source-based, not a CMS.
+The sidebar follows the provided reference, excluding collaborators. SePay now shows configuration status and bank transfers matched to orders. NoDNS grant and cancel endpoints are connected through server actions and the payment webhook, with paid-order gating, durable operation history, and review of uncertain outcomes. No fabricated transactions or success states are displayed. Article editing is still source-based, not a CMS.
 
-The customer signup form is not connected to order creation or payments. Creating an order here does not activate Spotify or charge a customer.
+The customer signup form now creates a pending checkout order and bank-transfer QR. SePay confirms matched transfers. See PAYMENT_SETUP.md for Cloudflare D1, webhook configuration, and activation limitations.
 
 ## Storage
 
-Orders are stored in `.data/orders.json` by default, outside public assets and ignored by Git. Set `ADMIN_DATA_DIR` to a private persistent volume for deployment. Writes are serialized within one Node.js process and replace the file atomically. This setup supports a single application process with durable local storage. Serverless deployments, multiple replicas, or high traffic need a database instead. Back up the data directory and restrict access to it.
+On Cloudflare, orders and settings use the private D1 binding configured in PAYMENT_SETUP.md. On a local Node server, orders are stored in `.data/orders.json` by default, outside public assets and ignored by Git. Set `ADMIN_DATA_DIR` to a private persistent volume for deployment. Writes are serialized within one Node.js process and replace the file atomically. This setup supports a single application process with durable local storage. Serverless deployments, multiple replicas, or high traffic need a database instead. Back up the data directory and restrict access to it.
 
 The UI is an independent admin dashboard for this project. The private admin interface of locketgold.info was not available for inspection, so this is not an exact reproduction.

@@ -2,10 +2,11 @@
 
 import {useEffect,useState} from 'react'
 import Link from 'next/link'
+import {premiumPlans} from '@/lib/plans'
 import {ArrowUpRight,Music2,Sparkles,X} from 'lucide-react'
 
 const buyers=['@minh***','@nam***','@trang***','@huy***','@linh***','@tuan***','@vy***','@duc***']
-const packages=['Premium 1 tháng','Premium 1 năm','Premium vĩnh viễn']
+const packages=premiumPlans.map(plan=>plan.name)
 type Notice={buyer:string;plan:string;key:number}
 
 export default function PurchaseNotices(){

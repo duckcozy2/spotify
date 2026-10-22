@@ -11,6 +11,15 @@
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "spotify-db",
+			// Replace after: npx wrangler d1 create spotify-db
+			"database_id": "00000000-0000-0000-0000-000000000000",
+			"migrations_dir": "migrations"
+		}
+	],
 	"services": [
 		{
 			// Self-reference service binding, the service name must match the worker name

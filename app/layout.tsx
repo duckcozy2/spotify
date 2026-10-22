@@ -18,4 +18,6 @@ const beVietnamPro=localFont({
   fallback:['Arial','Helvetica','sans-serif'],
 })
 export const metadata:Metadata={metadataBase:new URL(base),title:{default:'SpotifyPremium.vn | Tìm hiểu & nâng cấp Spotify Premium',template:'%s | SpotifyPremium.vn'},description:'Khám phá quyền lợi Spotify Premium, tham khảo bảng giá, hướng dẫn đăng ký và giải đáp câu hỏi thường gặp.',robots:{index:true,follow:true},openGraph:{type:'website',locale:'vi_VN',siteName:'SpotifyPremium.vn'}}
+// Settings (including article prices) come from the deployed database at request time.
+export const dynamic='force-dynamic'
 export default async function RootLayout({children}:{children:React.ReactNode}){const {settings}=await readAdminContent();return <html lang="vi" className={beVietnamPro.variable}><body><PublicSettingsProvider settings={settings}><SiteFrame>{children}</SiteFrame></PublicSettingsProvider></body></html>}
